@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Drayton Valley — All Customers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: Arial, sans-serif; }
+    #header { background:#375623; color:white; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; }
+    #header h1 { font-size:17px; }
+    #header span { font-size:12px; opacity:0.85; }
+    #map { height:calc(100vh - 54px); height:calc(100dvh - 54px); min-height:400px; width:100%; }
+    .custom-label { background:#FFEB3B; color:#1a1a1a; border:2px solid #E65100; border-radius:4px; padding:2px 7px; font-size:11px; font-weight:bold; white-space:nowrap; box-shadow:0 2px 6px rgba(0,0,0,0.4); }
+    .edm-label { background:#1F4E79; color:white; border:2px solid white; border-radius:4px; padding:2px 8px; font-size:11px; font-weight:bold; white-space:nowrap; box-shadow:0 2px 6px rgba(0,0,0,0.4); }
+    .leaflet-popup-content b { color:#375623; font-size:14px; }
+    .leaflet-popup-content p { margin:3px 0; font-size:12px; color:#333; }
+  </style>
+</head>
+<body>
+<div id="header">
+  <h1>🌿 Drayton Valley — All Customers</h1>
+  <span>12 customers | Drayton Valley & surrounding areas, AB</span>
+</div>
+<div id="map"><p style="padding:20px;font:16px Arial,sans-serif;">Loading map… If this message remains, check your internet connection and reload.</p></div>
+<script>
+  if (!window.L) {
+    document.getElementById('map').innerHTML = '<p style="padding:20px;font:16px Arial,sans-serif;color:#b00020;">The map library could not load. Check your internet connection, then reload this page.</p>';
+    throw new Error('Leaflet library failed to load');
+  }
+  document.getElementById('map').innerHTML = '';
+  const map = L.map('map').setView([53.40, -114.3], 8);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom:19
+  }).addTo(map);
+
+  L.marker([53.5461, -113.4938], {
+    icon: L.divIcon({ className:'', html:'<div class="edm-label">📍 EDMONTON</div>', iconAnchor:[55,10] }),
+    interactive:false
+  }).addTo(map);
+
+  L.marker([53.2217, -114.9769], {
+    icon: L.divIcon({ className:'', html:'<div class="edm-label" style="background:#C00000;">⭐ DRAYTON VALLEY (HUB)</div>', iconAnchor:[55,10] }),
+    interactive:false
+  }).addTo(map);
+
+  const customers = [
+    { no:12, last:"Wolfe", full:"Shelley & Jeremy Wolfe", addr:"11 Banff Court E", city:"Devon", ref:"000-00-064074", lat:53.361, lon:-113.725 },
+    { no:22, last:"Birch", full:"Joseph Murray Birch", addr:"46 Westview Dr", city:"Calmar", ref:"P2026-02798", lat:53.266, lon:-113.801 },
+    { no:26, last:"Compton", full:"Christopher Compton & Stacey Clough", addr:"1315 Twp Rd 550", city:"Lac Ste. Anne County", ref:"000-00-064164", lat:53.704, lon:-114.194 },
+    { no:27, last:"Frank", full:"Lise Frank", addr:"166 Athabasca Dr", city:"Devon", ref:"000-00-064168", lat:53.363, lon:-113.716 },
+    { no:32, last:"Bain", full:"Brendan Bain & Valerie Saliba", addr:"37 Parkview Cres", city:"Calmar", ref:"000-00-064135", lat:53.266, lon:-113.801 },
+    { no:37, last:"Stern", full:"Lorne Stern", addr:"NW 31 48 27 W4", city:"Thorsby", ref:"000-00-064127", lat:53.221, lon:-114.2 },
+    { no:43, last:"Derksen", full:"Lee-Ann Derksen", addr:"10 - 4418 Hwy 633", city:"Darwell", ref:"P2026-02734", lat:53.7149, lon:-114.6252 },
+    { no:45, last:"McQuade", full:"Joseph & Donna McQuade", addr:"4201 44 St", city:"Leduc", ref:"000-00-064104", lat:53.256, lon:-113.536 },
+    { no:49, last:"Bevens", full:"Lucy Bevens", addr:"15 Aberdeen Cres", city:"Stony Plain", ref:"P2026-02749", lat:53.535, lon:-113.986 },
+    { no:51, last:"Jabs", full:"Darnell Jabs", addr:"62 Corinthia Dr", city:"Leduc", ref:"000-00-064085", lat:53.255, lon:-113.556 },
+    { no:52, last:"Palmer", full:"Darren Palmer", addr:"123 Keyport Cir", city:"Leduc", ref:"P2026-02758", lat:53.263, lon:-113.593 },
+    { no:58, last:"Peck", full:"Mandy Peck", addr:"48214 Range Road 281", city:"Thorsby", ref:"P2026-02771", lat:53.221, lon:-114.2 },
+  ];
+
+  const pinIcon = L.icon({
+    iconUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='17' height='28' viewBox='0 0 25 41'><path d='M12.5 0C5.6 0 0 5.6 0 12.5C0 22 12.5 41 12.5 41S25 22 25 12.5C25 5.6 19.4 0 12.5 0z' fill='%232A81CB' stroke='%231F5F99' stroke-width='1.5'/><circle cx='12.5' cy='12.5' r='5' fill='white'/></svg>",
+    iconSize:[17,28], iconAnchor:[8,28], popupAnchor:[1,-24]
+  });
+
+  customers.forEach(c => {
+    L.marker([c.lat, c.lon], { icon: pinIcon }).addTo(map)
+      .bindPopup(`<b>${c.no}. ${c.last}</b><br><p>${c.full}</p><p>📍 ${c.addr}, ${c.city}, AB</p><p>🔖 ${c.ref}</p>`);
+    L.marker([c.lat, c.lon], {
+      icon: L.divIcon({ className:'', html:`<div class="custom-label">${c.no}. ${c.last}</div>`, iconAnchor:[-4,10] }),
+      interactive:false
+    }).addTo(map);
+  });
+</script>
+</body>
+</html>

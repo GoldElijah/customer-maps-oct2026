@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Edmonton — All Customers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: Arial, sans-serif; }
+    #header { background:#1F4E79; color:white; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; }
+    #header h1 { font-size:17px; }
+    #header span { font-size:12px; opacity:0.85; }
+    #map { height:calc(100vh - 54px); width:100%; }
+    .custom-label { background:#FFEB3B; color:#1a1a1a; border:2px solid #E65100; border-radius:4px; padding:2px 7px; font-size:11px; font-weight:bold; white-space:nowrap; box-shadow:0 2px 6px rgba(0,0,0,0.4); }
+    .leaflet-popup-content b { color:#1F4E79; font-size:14px; }
+    .leaflet-popup-content p { margin:3px 0; font-size:12px; color:#333; }
+  </style>
+</head>
+<body>
+<div id="header">
+  <h1>📍 Edmonton — All Customers</h1>
+  <span>33 customers | Edmonton & immediate area, AB</span>
+</div>
+<div id="map"></div>
+<script>
+  const map = L.map('map').setView([53.62, -113.52], 10);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom:19
+  }).addTo(map);
+
+  const customers = [
+    { no:2, last:"Leitao", full:"Alceu Manuel Leitao", addr:"8638 152B Ave NW", city:"Edmonton", ref:"P2026-02804", lat:53.615, lon:-113.474 },
+    { no:3, last:"Schroeder", full:"Emily Rachelle Schroeder", addr:"3511 114 Ave NW", city:"Edmonton", ref:"P2026-02814", lat:53.566, lon:-113.395 },
+    { no:5, last:"Sernowski", full:"Garth Sernowski", addr:"10408 99 St", city:"Morinville", ref:"P2026-02750", lat:53.807, lon:-113.644 },
+    { no:6, last:"Kebernik", full:"Jo Anne Kebernik", addr:"59 Howard Cres", city:"St. Albert", ref:"P2026-02761", lat:53.609, lon:-113.632 },
+    { no:7, last:"Willsey", full:"Chad Willsey", addr:"2541 Cole Cres SW", city:"Edmonton", ref:"P2026-02789", lat:53.404, lon:-113.533 },
+    { no:8, last:"Chambers", full:"Tanner Chambers & Raelynn Desmarais", addr:"3115 33 Ave NW", city:"Edmonton", ref:"P2026-02801", lat:53.463, lon:-113.385 },
+    { no:9, last:"Williamson", full:"Timothy M. Williamson", addr:"7004 185 St NW", city:"Edmonton", ref:"000-00-064121", lat:53.504, lon:-113.641 },
+    { no:10, last:"Bhardwaj", full:"Jagjeet Bhardwaj", addr:"12116 39 Ave NW", city:"Edmonton", ref:"P2026-02766", lat:53.474, lon:-113.548 },
+    { no:11, last:"Haban", full:"Danilo Haban", addr:"1583 Jarvis Cres NW", city:"Edmonton", ref:"P2026-02785", lat:53.486, lon:-113.416 },
+    { no:13, last:"Campeau", full:"Robin Leonard Campeau", addr:"8208 135A Ave NW", city:"Edmonton", ref:"P2026-02757", lat:53.598, lon:-113.468 },
+    { no:14, last:"Milosavljevic", full:"Dragisa Milosavljevic", addr:"9804 175 Ave NW", city:"Edmonton", ref:"P2026-02802", lat:53.638, lon:-113.494 },
+    { no:15, last:"McCarroll", full:"Jennifer McCarroll", addr:"2528 206 St NW", city:"Edmonton", ref:"000-00-064128", lat:53.456, lon:-113.675 },
+    { no:16, last:"Botictic", full:"Eloisa Botictic", addr:"13515 114 St NW", city:"Edmonton", ref:"P2026-02763", lat:53.598, lon:-113.518 },
+    { no:17, last:"Sunje", full:"Haris Sunje", addr:"718 90 St SW", city:"Edmonton", ref:"P2026-02796", lat:53.426, lon:-113.472 },
+    { no:19, last:"Vogt", full:"Thomas Vogt", addr:"11415 37A Ave NW", city:"Edmonton", ref:"P2026-02783", lat:53.472, lon:-113.531 },
+    { no:20, last:"Kehler", full:"Garry Kehler", addr:"3823 62 St NW", city:"Edmonton", ref:"P2026-02795", lat:53.475, lon:-113.433 },
+    { no:21, last:"Butler", full:"Jodie Butler", addr:"20118 18A Ave NW", city:"Edmonton", ref:"P2026-02500", lat:53.45, lon:-113.667 },
+    { no:23, last:"Salisny", full:"Carol Salisny", addr:"1816 Latta Pl NW", city:"Edmonton", ref:"000-00-064144", lat:53.457, lon:-113.575 },
+    { no:25, last:"Cantelon", full:"Judy Cantelon", addr:"10954 81 St", city:"Edmonton", ref:"P2026-02792", lat:53.558, lon:-113.466 },
+    { no:28, last:"McGinty", full:"Cody McGinty (Christina)", addr:"2 Walnut Pl", city:"St. Albert", ref:"P2026-02784", lat:53.65, lon:-113.607 },
+    { no:29, last:"McMillan", full:"Donna McMillan", addr:"8607 142 Ave NW", city:"Edmonton", ref:"P2026-02791", lat:53.604, lon:-113.471 },
+    { no:31, last:"Linau", full:"Gerry Linau", addr:"9413 98 St", city:"Fort Saskatchewan", ref:"P2026-02780", lat:53.703, lon:-113.216 },
+    { no:33, last:"Pruden", full:"Shawn & Tammy Pruden", addr:"6115 12 Ave SW", city:"Edmonton", ref:"P2026-02778", lat:53.423, lon:-113.435 },
+    { no:36, last:"Johnson", full:"Micheline Johnson", addr:"22 Lawrence Cres", city:"St. Albert", ref:"P2026-02752", lat:53.644, lon:-113.643 },
+    { no:39, last:"Ngo", full:"Khing Ngo", addr:"11227 24 Ave NW", city:"Edmonton", ref:"P2026-02762", lat:53.456, lon:-113.523 },
+    { no:50, last:"Dakin", full:"James Dakin", addr:"12931 28 St NW", city:"Edmonton", ref:"000-00-064140", lat:53.588, lon:-113.384 },
+    { no:53, last:"Gladun", full:"Russell John Gladun", addr:"7 Dumet Pl", city:"St. Albert", ref:"000-00-064082", lat:53.654, lon:-113.641 },
+    { no:55, last:"Rosko", full:"Joey Rosko", addr:"4180 Orchards Dr SW", city:"Edmonton", ref:"000-00-064109", lat:53.407, lon:-113.476 },
+    { no:56, last:"Roy", full:"Saktinil Roy", addr:"52 Desmarais Cres", city:"St. Albert", ref:"P2026-02732", lat:53.654, lon:-113.647 },
+    { no:57, last:"Harapniuk", full:"Karen A. Harapniuk", addr:"5432 152 Ave NW", city:"Edmonton", ref:"P2026-02772", lat:53.614, lon:-113.427 },
+    { no:59, last:"Ranks", full:"Cheryl Ranks", addr:"9611 162 St NW", city:"Edmonton", ref:"P2026-02748", lat:53.534, lon:-113.6 },
+    { no:61, last:"Boukouris", full:"John Boukouris", addr:"74 Danforth Cres", city:"St. Albert", ref:"P2026-02738", lat:53.651, lon:-113.649 },
+    { no:62, last:"Shapland", full:"Fiona & Norman Shapland", addr:"1916 65 St NW", city:"Edmonton", ref:"P2026-02728", lat:53.451, lon:-113.434 },
+  ];
+
+  const pinIcon = L.icon({
+    iconUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='17' height='28' viewBox='0 0 25 41'><path d='M12.5 0C5.6 0 0 5.6 0 12.5C0 22 12.5 41 12.5 41S25 22 25 12.5C25 5.6 19.4 0 12.5 0z' fill='%232A81CB' stroke='%231F5F99' stroke-width='1.5'/><circle cx='12.5' cy='12.5' r='5' fill='white'/></svg>",
+    iconSize:[17,28], iconAnchor:[8,28], popupAnchor:[1,-24]
+  });
+
+  customers.forEach(c => {
+    L.marker([c.lat, c.lon], { icon: pinIcon }).addTo(map)
+      .bindPopup(`<b>${c.no}. ${c.last}</b><br><p>${c.full}</p><p>📍 ${c.addr}, ${c.city}, AB</p><p>🔖 ${c.ref}</p>`);
+    L.marker([c.lat, c.lon], {
+      icon: L.divIcon({ className:'', html:`<div class="custom-label">${c.no}. ${c.last}</div>`, iconAnchor:[-4,10] }),
+      interactive:false
+    }).addTo(map);
+  });
+</script>
+</body>
+</html>

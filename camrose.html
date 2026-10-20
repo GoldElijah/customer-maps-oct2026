@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Camrose — All Customers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: Arial, sans-serif; }
+    #header { background:#7B2D00; color:white; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; }
+    #header h1 { font-size:17px; }
+    #header span { font-size:12px; opacity:0.85; }
+    #map { height:calc(100vh - 54px); width:100%; }
+    .custom-label { background:#FFEB3B; color:#1a1a1a; border:2px solid #E65100; border-radius:4px; padding:2px 7px; font-size:11px; font-weight:bold; white-space:nowrap; box-shadow:0 2px 6px rgba(0,0,0,0.4); }
+    .edm-label { background:#1F4E79; color:white; border:2px solid white; border-radius:4px; padding:2px 8px; font-size:11px; font-weight:bold; white-space:nowrap; box-shadow:0 2px 6px rgba(0,0,0,0.4); }
+    .leaflet-popup-content b { color:#7B2D00; font-size:14px; }
+    .leaflet-popup-content p { margin:3px 0; font-size:12px; color:#333; }
+  </style>
+</head>
+<body>
+<div id="header">
+  <h1>🟠 Camrose — All Customers</h1>
+  <span>17 customers | Camrose & surrounding areas, AB</span>
+</div>
+<div id="map"></div>
+<script>
+  const map = L.map('map').setView([53.20, -111.80], 7);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom:19
+  }).addTo(map);
+
+  L.marker([53.5461, -113.4938], {
+    icon: L.divIcon({ className:'', html:'<div class="edm-label">📍 EDMONTON</div>', iconAnchor:[55,10] }),
+    interactive:false
+  }).addTo(map);
+
+  L.marker([53.0167, -112.8333], {
+    icon: L.divIcon({ className:'', html:'<div class="edm-label" style="background:#C00000;">⭐ CAMROSE (HUB)</div>', iconAnchor:[55,10] }),
+    interactive:false
+  }).addTo(map);
+
+  const customers = [
+    { no:1, last:"Benke", full:"Gertrude Benke (Harvey)", addr:"6512 55 Ave", city:"Camrose", ref:"P2026-02812", lat:53.03, lon:-112.853 },
+    { no:4, last:"Rusk", full:"Carolyn Rusk", addr:"LT 26A Peace Hills Heights", city:"Wetaskiwin", ref:"P2026-02809", lat:52.9693, lon:-113.3769 },
+    { no:18, last:"Wold", full:"Bradley Wold", addr:"19220 Range Road 434", city:"Edberg", ref:"P2026-02756", lat:52.786, lon:-112.786 },
+    { no:24, last:"Law", full:"Sherri Law", addr:"46201 Range Road 213", city:"Camrose County", ref:"000-00-064120", lat:52.936, lon:-112.955 },
+    { no:30, last:"Fadden", full:"Rodney Fadden", addr:"4237 47A Ave", city:"Vermilion", ref:"000-00-064167", lat:53.35, lon:-110.832 },
+    { no:34, last:"Gessner", full:"Kim Gessner", addr:"5135 49 St", city:"Provost", ref:"000-00-064150", lat:52.356, lon:-110.256 },
+    { no:35, last:"Girard", full:"Laura D.L. Girard", addr:"1109 Movile St", city:"Ohaton", ref:"P2026-02767", lat:52.968, lon:-112.66 },
+    { no:38, last:"Carson", full:"Ann Carson", addr:"4827 48 St", city:"Camrose", ref:"P2026-02793", lat:53.019, lon:-112.822 },
+    { no:40, last:"Seaman", full:"Christine Seaman", addr:"222 Wilks Dr", city:"Millet", ref:"000-00-064141", lat:53.062, lon:-113.443 },
+    { no:41, last:"Lambertus", full:"Ryan Lambertus & Teagan Korol", addr:"119 Diamond Dr", city:"Millet", ref:"000-00-064122", lat:53.062, lon:-113.443 },
+    { no:42, last:"Curry", full:"Carol Curry", addr:"5002 58 St", city:"Camrose", ref:"P2026-02764", lat:53.023, lon:-112.84 },
+    { no:44, last:"Zimmer", full:"Cal & Melissa Zimmer", addr:"7210 44A Ave Close", city:"Camrose", ref:"P2026-02790", lat:53.012, lon:-112.867 },
+    { no:46, last:"Gledhill", full:"Louise Gledhill", addr:"6501 50 Ave NW", city:"Camrose", ref:"P2026-02760", lat:53.021, lon:-112.854 },
+    { no:47, last:"Johnson", full:"Dean Johnson", addr:"46028 RR 180", city:"Bawlf", ref:"P2026-02769", lat:53.047, lon:-112.343 },
+    { no:48, last:"Neumann", full:"Richard Neumann", addr:"5233 49 St", city:"Daysland", ref:"000-00-064093", lat:52.867, lon:-112.265 },
+    { no:54, last:"Doerksen", full:"Robert & Rachel Doerksen", addr:"5304 61 St", city:"Camrose", ref:"P2026-02775", lat:53.03, lon:-112.846 },
+    { no:60, last:"Nobert", full:"Nathan Nobert", addr:"4311 73 St", city:"Camrose", ref:"P2026-02770", lat:53.01, lon:-112.866 },
+  ];
+
+  const pinIcon = L.icon({
+    iconUrl: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='17' height='28' viewBox='0 0 25 41'><path d='M12.5 0C5.6 0 0 5.6 0 12.5C0 22 12.5 41 12.5 41S25 22 25 12.5C25 5.6 19.4 0 12.5 0z' fill='%232A81CB' stroke='%231F5F99' stroke-width='1.5'/><circle cx='12.5' cy='12.5' r='5' fill='white'/></svg>",
+    iconSize:[17,28], iconAnchor:[8,28], popupAnchor:[1,-24]
+  });
+
+  customers.forEach(c => {
+    L.marker([c.lat, c.lon], { icon: pinIcon }).addTo(map)
+      .bindPopup(`<b>${c.no}. ${c.last}</b><br><p>${c.full}</p><p>📍 ${c.addr}, ${c.city}, AB</p><p>🔖 ${c.ref}</p>`);
+    L.marker([c.lat, c.lon], {
+      icon: L.divIcon({ className:'', html:`<div class="custom-label">${c.no}. ${c.last}</div>`, iconAnchor:[-4,10] }),
+      interactive:false
+    }).addTo(map);
+  });
+</script>
+</body>
+</html>
